@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ado-net-wrapper", "ado-net-wrapper\ado-net-wrapper.csproj", "{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ado-wrapper-lib", "ado-wrapper-lib\ado-wrapper-lib.csproj", "{17AD4674-F042-4F54-98B3-7190530DFA88}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17AD4674-F042-4F54-98B3-7190530DFA88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AD4674-F042-4F54-98B3-7190530DFA88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AD4674-F042-4F54-98B3-7190530DFA88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AD4674-F042-4F54-98B3-7190530DFA88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DC8879C-20E8-44E8-A3E9-2E97264954E1}
+	EndGlobalSection
+EndGlobal
