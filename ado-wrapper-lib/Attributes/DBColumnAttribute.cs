@@ -3,7 +3,7 @@
 namespace ado_wrapper_lib.Attributes;
 
 [System.AttributeUsage(System.AttributeTargets.Property | AttributeTargets.Parameter)]
-internal class DBColumnAttribute : System.Attribute
+public class DBColumnAttribute : System.Attribute
 {
     public SqlDbType Type { set; get; }
     public string? Name { set; get; }
