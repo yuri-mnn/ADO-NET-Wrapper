@@ -24,7 +24,7 @@ public class ProductRepository : IRepository<Product>
 
     public Product? Get(int id)
     {
-        var adoParams = new AdoParams<SqlParameter[]>(Name: "Production.GetAllProduct",
+        var adoParams = new AdoParams(Name: "Production.GetAllProduct",
                                                       DBParams: new SqlParameter[] { new SqlParameter("@Id", id) },
                                                       Connection: null,
                                                       Transaction: null,
@@ -34,7 +34,7 @@ public class ProductRepository : IRepository<Product>
 
     public IEnumerable<Product>? GetAll()
     {
-        var adoParams = new AdoParams<SqlParameter[]>(Name: "Production.GetAllProduct");
+        var adoParams = new AdoParams(Name: "Production.GetAllProduct");
         return _db.Execute<SqlParameter[], Product>(adoParams, TypeExecuter.Procedure);
     }
 
