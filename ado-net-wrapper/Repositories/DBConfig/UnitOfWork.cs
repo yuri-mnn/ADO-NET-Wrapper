@@ -4,10 +4,8 @@ namespace ado_net_wrapper.Repositories.DBConfig;
 
 public class UnitOfWork
 {
-    //private readonly IAdoDBContext _db = 
-    //    new AdoDBContext("Server=LENOVO_PC;Database=AdventureWorks2016_EXT;Integrated Security=true;Trust Server Certificate=True;Min Pool Size=5;Connection Timeout=300;");
-    private readonly IAdoDBContext _db =
-       new AdoDBContext("Server=citppo2\\sql2019;Database=Abit;Integrated Security=true;Trust Server Certificate=True;Min Pool Size=5;Connection Timeout=300;");
+    private readonly IAdoDBContext _db = 
+         new AdoDBContext("Server=LENOVO_PC;Database=AdventureWorks2016_EXT;Integrated Security=true;Trust Server Certificate=True;Min Pool Size=5;Connection Timeout=300;");
     private ProductRepository? _productRepository;
     private AbitRepository _abitRepository;
 
