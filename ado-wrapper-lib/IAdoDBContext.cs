@@ -2,7 +2,8 @@
 
 public interface IAdoDBContext
 {
-    public IEnumerable<TResult>? Execute<TParam, TResult>(AdoParams adoParams, TypeExecuter typeExecuter);
-    public TResult? ExecuteScalar<TParam, TResult>(AdoParams adoParams, TypeExecuter typeExecuter);
-    public void Execute<TParam>(AdoParams adoParams, TypeExecuter typeExecuter);
+    public string ConnectionString { get; }
+    public IEnumerable<TResult>? Execute<TResult>(AdoParams adoParams, TypeExecuter typeExecuter);
+    public TResult? ExecuteScalar<TResult>(AdoParams adoParams, TypeExecuter typeExecuter);
+    public void Execute(AdoParams adoParams, TypeExecuter typeExecuter);
 }

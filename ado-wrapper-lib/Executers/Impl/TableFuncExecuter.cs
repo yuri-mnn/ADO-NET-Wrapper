@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ado_wrapper_lib.Executers.Impl
 {
-    internal class FuncExecuter<ParamsType, ResultType> : AdoExecuter<ParamsType, ResultType>
+    internal class FuncExecuter<ResultType> : AdoExecuter<ResultType>
     {
         public FuncExecuter(string connectionStr) => _connectionString = connectionStr;
 

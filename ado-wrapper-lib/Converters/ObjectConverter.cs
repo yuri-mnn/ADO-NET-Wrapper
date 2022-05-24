@@ -15,7 +15,7 @@ public class ObjectConverter
 
         try
         {
-            Type typeGeneric = typeof(T);
+            Type typeGeneric = obj.GetType();
             if (typeGeneric.IsPrimitive)
             {
 

@@ -24,18 +24,18 @@ public class ProductRepository : IRepository<Product>
 
     public Product? Get(int id)
     {
-        var adoParams = new AdoParams(Name: "Production.GetAllProduct",
-                                                      DBParams: new SqlParameter[] { new SqlParameter("@Id", id) },
-                                                      Connection: null,
-                                                      Transaction: null,
-                                                      Timeout: 120);
-        return _db.Execute<SqlParameter[], Product>(adoParams, TypeExecuter.Procedure)?.ToList().FirstOrDefault();
+        var adoParams = new AdoParams(name: "Production.GetAllProduct",
+                                                      dbParams: new SqlParameter[] { new SqlParameter("@Id", id) },
+                                                      connection: null,
+                                                      transaction: null,
+                                                      timeout: 120);
+        return _db.Execute<Product>(adoParams, TypeExecuter.Procedure)?.ToList().FirstOrDefault();
     }
 
     public IEnumerable<Product>? GetAll()
     {
-        var adoParams = new AdoParams(Name: "Production.GetAllProduct");
-        return _db.Execute<SqlParameter[], Product>(adoParams, TypeExecuter.Procedure);
+        var adoParams = new AdoParams(name: "Production.GetAllProduct");
+        return _db.Execute<Product>(adoParams, TypeExecuter.Procedure);
     }
 
     public void Update(Product item)

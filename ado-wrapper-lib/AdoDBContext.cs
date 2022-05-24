@@ -1,5 +1,4 @@
-﻿using ado_wrapper_lib.Config;
-using ado_wrapper_lib.Executers.Impl;
+﻿using ado_wrapper_lib.Executers.Impl;
 using Microsoft.Data.SqlClient;
 
 namespace ado_wrapper_lib;
@@ -7,54 +6,68 @@ namespace ado_wrapper_lib;
 public class AdoDBContext : IAdoDBContext
 {
     private readonly string _connectionString;
+    public string ConnectionString => _connectionString;
 
     public AdoDBContext(string connectionString)
     {
         _connectionString = connectionString;
     }
 
-    public IEnumerable<TResult>? Execute<TParam, TResult>(AdoParams adoParams, TypeExecuter typeExecuter)
+    public IEnumerable<TResult>? Execute<TResult>(AdoParams adoParams, TypeExecuter typeExecuter)
     {
-        AdoExecuter<TParam, TResult>? procExecuter = null;
+        AdoExecuter<TResult>? procExecuter = null;
         if (typeExecuter == TypeExecuter.Procedure)
-            procExecuter = new ProcedureExecuter<TParam, TResult>(_connectionString);
+            procExecuter = new ProcedureExecuter<TResult>(_connectionString);
         else if (typeExecuter == TypeExecuter.Function) 
-            procExecuter = new FuncExecuter<TParam, TResult>(_connectionString);
+            procExecuter = new FuncExecuter<TResult>(_connectionString);
         else
             throw new InvalidOperationException("Executer not supported");
 
-        return procExecuter?.Execute(name: adoParams.Name, dbParams: (TParam)adoParams.DBParams, connection: adoParams.Connection,
-                                    transaction: adoParams.Transaction, timeout: (adoParams.Timeout ?? 120)) ?? null;
+        return procExecuter?.Execute(name: adoParams.Name, 
+                                     dbParams: adoParams?.DBParams, 
+                                     outputDBParams: out adoParams.OutputDBParams, 
+                                     connection: adoParams.Connection,
+                                     transaction: adoParams.Transaction, 
+                                     timeout: (adoParams.Timeout ?? 120));
     }
 
-    public TResult? ExecuteScalar<TParam, TResult>(AdoParams adoParams, TypeExecuter typeExecuter)
+    public TResult? ExecuteScalar<TResult>(AdoParams adoParams, TypeExecuter typeExecuter)
     {
-        AdoExecuter<TParam, TResult>? procExecuter = null;
+        AdoExecuter<TResult>? procExecuter = null;
         if (typeExecuter == TypeExecuter.Procedure)
-            procExecuter = new ProcedureExecuter<TParam, TResult>(_connectionString);
+            procExecuter = new ProcedureExecuter<TResult>(_connectionString);
         else if (typeExecuter == TypeExecuter.Function)
-            procExecuter = new FuncExecuter<TParam, TResult>(_connectionString);
+            procExecuter = new FuncExecuter<TResult>(_connectionString);
         else
             throw new InvalidOperationException("Executer not supported");
 
-        return procExecuter.ExecuteScalar(name: adoParams.Name, dbParams: (TParam)adoParams.DBParams, connection: adoParams.Connection,
-                                    transaction: adoParams.Transaction, timeout: (adoParams.Timeout ?? 120));
+        return procExecuter.ExecuteScalar(name: adoParams.Name,
+                                          dbParams: adoParams?.DBParams,
+                                          outputDBParams: out adoParams.OutputDBParams,
+                                          connection: adoParams.Connection,
+                                          transaction: adoParams.Transaction,
+                                          timeout: (adoParams.Timeout ?? 120));
     }
 
-    public void Execute<TParam>(AdoParams adoParams, TypeExecuter typeExecuter)
+    public void Execute(AdoParams adoParams, TypeExecuter typeExecuter)
     {
-        AdoExecuter<TParam, Dictionary<string, object?>>? procExecuter = null;
+        AdoExecuter<Dictionary<string, object?>>? procExecuter = null;
         if (typeExecuter == TypeExecuter.Procedure)
-            procExecuter = new ProcedureExecuter<TParam, Dictionary<string, object?>>(_connectionString);
+            procExecuter = new ProcedureExecuter<Dictionary<string, object?>>(_connectionString);
         else if (typeExecuter == TypeExecuter.Function)
-            procExecuter = new FuncExecuter<TParam, Dictionary<string, object?>>(_connectionString);
+            procExecuter = new FuncExecuter<Dictionary<string, object?>>(_connectionString);
         else
             throw new InvalidOperationException("Executer not supported");
 
-        procExecuter?.ExecuteWithouResult(name: adoParams.Name, dbParams: (TParam)adoParams.DBParams, connection: adoParams.Connection,
-                                          transaction: adoParams.Transaction, timeout: (adoParams.Timeout ?? 120));
+        procExecuter?.ExecuteWithouResult(name: adoParams.Name,
+                                          dbParams: adoParams?.DBParams,
+                                          outputDBParams: out adoParams.OutputDBParams,
+                                          connection: adoParams.Connection,
+                                          transaction: adoParams.Transaction,
+                                          timeout: (adoParams.Timeout ?? 120));
     }
 }
+
 
 public enum TypeExecuter
 {
@@ -63,8 +76,27 @@ public enum TypeExecuter
     Query
 }
 
-public record AdoParams(string Name,
-                        object? DBParams = default,
-                                    SqlConnection? Connection = null,
-                                    SqlTransaction? Transaction = null,
-                                    int? Timeout = 120);
+public class AdoParams
+{
+ 
+    public AdoParams(string name,
+                     object? dbParams = null,
+                     SqlConnection? connection = null,
+                     SqlTransaction? transaction = null,
+                     int? timeout = 120)
+    {
+        Name = name;
+        DBParams = dbParams;
+        Connection = connection;
+        Transaction = transaction;
+        Timeout = timeout;
+    }
+
+    public string Name { get; set; }
+    public object? DBParams { get; set; }
+    public SqlConnection? Connection { get; set; }
+    public SqlTransaction? Transaction { get; set; }
+    public int? Timeout { get; set; }
+
+    public Dictionary<string, object?> OutputDBParams = null!;
+}

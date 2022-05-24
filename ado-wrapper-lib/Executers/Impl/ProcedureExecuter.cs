@@ -1,12 +1,11 @@
-﻿using ado_wrapper_lib.Config;
-using ado_wrapper_lib.Converters;
+﻿using ado_wrapper_lib.Converters;
 using Microsoft.Data.SqlClient;
 using System.Collections;
 using System.Data;
 
 namespace ado_wrapper_lib.Executers.Impl;
 
-internal class ProcedureExecuter<ParamsType, ResultType> : AdoExecuter<ParamsType, ResultType>
+internal class ProcedureExecuter<ResultType> : AdoExecuter<ResultType>
 {
     public ProcedureExecuter(string connectionStr) => _connectionString = connectionStr;
 

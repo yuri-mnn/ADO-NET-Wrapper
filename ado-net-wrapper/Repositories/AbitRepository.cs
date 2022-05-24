@@ -1,5 +1,7 @@
 ﻿using ado_net_wrapper.Repositories.DBConfig;
 using ado_wrapper_lib;
+using ado_wrapper_lib.Attributes;
+using Microsoft.Data.SqlClient;
 
 namespace ado_net_wrapper.Repositories
 {
@@ -21,8 +23,14 @@ namespace ado_net_wrapper.Repositories
         public AbitResult? Get(int id)
         {
             AbitQuery query = new(id, null, null);
-            var adoParams = new AdoParams(Name: "dbo.fnCheckAbitIdPPIsOkon", DBParams: query);
-            return new AbitResult(_db.ExecuteScalar<AbitQuery, bool>(adoParams, TypeExecuter.Function));
+            var query1 = new SqlParameter[]
+            {
+                new SqlParameter("@ID", id),
+                new SqlParameter("@Abit", Convert.DBNull),
+                new SqlParameter("@IDPP", Convert.DBNull)
+            };
+            var adoParams = new AdoParams(name: "dbo.fnCheckAbitIdPPIsOkon", dbParams: query);
+            return new AbitResult(_db.ExecuteScalar<bool>(adoParams, TypeExecuter.Function));
         }
 
         public IEnumerable<AbitResult>? GetAll()
@@ -37,5 +45,18 @@ namespace ado_net_wrapper.Repositories
     }
 
     public record AbitResult(bool IsOkon);
-    public record AbitQuery(int ID, int? Abit, int? IDPP);
+    public class AbitQuery {
+        public AbitQuery(int id, int? abit, int? idPP)
+        {
+            ID = id;
+            Abit = abit;
+            IDPP = idPP;
+        }
+
+
+        public int ID { get; }
+        public int? Abit { get; set; }
+        [DBColumn(Mapped = true)]
+        public int? IDPP { get; set; }
+    }
 }
