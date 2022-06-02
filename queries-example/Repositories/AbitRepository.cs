@@ -1,6 +1,6 @@
 ﻿using ado_net_wrapper.Repositories.DBConfig;
-using ado_wrapper_lib;
-using ado_wrapper_lib.Attributes;
+using AdoWrapper;
+using AdoWrapper.Attributes;
 using Microsoft.Data.SqlClient;
 
 namespace ado_net_wrapper.Repositories
@@ -45,8 +45,11 @@ namespace ado_net_wrapper.Repositories
     }
 
     public record AbitResult(bool IsOkon);
-    public class AbitQuery {
-        public AbitQuery(int id, int? abit, int? idPP)
+    
+    public record AbitQuery (int ID, int? Abit, [property: DBColumn(Name = "IDPP")] int? idPp132132134);
+    
+    public class AbitQuery1 {
+        public AbitQuery1(int id, int? abit, int? idPP)
         {
             ID = id;
             Abit = abit;
@@ -56,7 +59,7 @@ namespace ado_net_wrapper.Repositories
 
         public int ID { get; }
         public int? Abit { get; set; }
-        [DBColumn(Mapped = true)]
+        [property: DBColumn(Mapped = true)]
         public int? IDPP { get; set; }
     }
 }

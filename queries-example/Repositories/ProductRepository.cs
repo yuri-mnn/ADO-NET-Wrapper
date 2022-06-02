@@ -1,6 +1,6 @@
 ﻿using ado_net_wrapper.Models;
 using ado_net_wrapper.Repositories.DBConfig;
-using ado_wrapper_lib;
+using AdoWrapper;
 using Microsoft.Data.SqlClient;
 
 namespace ado_net_wrapper.Repositories;

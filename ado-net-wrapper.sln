@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ado-net-wrapper", "ado-net-wrapper\ado-net-wrapper.csproj", "{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoWrapper.QueriesExample", "queries-example\AdoWrapper.QueriesExample.csproj", "{3F14FDD2-1325-4676-AE28-D9A34DA63CA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ado-wrapper-lib", "ado-wrapper-lib\ado-wrapper-lib.csproj", "{17AD4674-F042-4F54-98B3-7190530DFA88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdoWrapper.Core", "ado-wrapper\AdoWrapper.Core.csproj", "{17AD4674-F042-4F54-98B3-7190530DFA88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

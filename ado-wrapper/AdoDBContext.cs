@@ -1,7 +1,7 @@
-﻿using ado_wrapper_lib.Executers.Impl;
+﻿using AdoWrapper.Executers.Impl;
 using Microsoft.Data.SqlClient;
 
-namespace ado_wrapper_lib;
+namespace AdoWrapper;
 
 public class AdoDBContext : IAdoDBContext
 {
@@ -29,6 +29,25 @@ public class AdoDBContext : IAdoDBContext
                                      connection: adoParams.Connection,
                                      transaction: adoParams.Transaction, 
                                      timeout: (adoParams.Timeout ?? 120));
+    }
+
+    public async Task<IEnumerable<TResult>?> ExecuteAsync<TResult>(AdoParams adoParams, TypeExecuter typeExecuter)
+    {
+        AdoExecuter<TResult>? procExecuter = null;
+        if (typeExecuter == TypeExecuter.Procedure)
+            procExecuter = new ProcedureExecuter<TResult>(_connectionString);
+        else if (typeExecuter == TypeExecuter.Function)
+            procExecuter = new FuncExecuter<TResult>(_connectionString);
+        else
+            throw new InvalidOperationException("Executer not supported");
+
+        var result = await procExecuter?.ExecuteAsync(name: adoParams.Name,
+                                     dbParams: adoParams?.DBParams,
+                                     connection: adoParams.Connection,
+                                     transaction: adoParams.Transaction,
+                                     timeout: (adoParams.Timeout ?? 120))!;
+        adoParams.OutputDBParams = result.Item2;
+        return result.Item1;
     }
 
     public TResult? ExecuteScalar<TResult>(AdoParams adoParams, TypeExecuter typeExecuter)

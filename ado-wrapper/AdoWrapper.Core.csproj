@@ -5,7 +5,7 @@
     <RootNamespace>ado_wrapper_lib</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+    <AssemblyVersion>0.0.0.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

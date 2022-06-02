@@ -1,9 +1,9 @@
-﻿using ado_wrapper_lib.Converters;
+﻿using AdoWrapper.Converters;
 using Microsoft.Data.SqlClient;
 using System.Collections;
 using System.Data;
 
-namespace ado_wrapper_lib;
+namespace AdoWrapper;
 
 public abstract class AdoExecuter<ResultType>
 {
@@ -67,6 +67,66 @@ public abstract class AdoExecuter<ResultType>
 
         outputDBParams = GetValueOutputSqlParams(parameters);
         return table;
+    }
+
+
+    /// <summary>
+    /// Выполнение процедуры, функции, запроса в БД
+    /// </summary>
+    /// <param name="name">имя процедуры, функции или запроса</param>
+    /// <param name="dbParams">параметры</param>
+    /// <param name="connection">соединение</param>
+    /// <param name="transaction">текущая транзакция</param>
+    /// <param name="timeout">максмальное время выполнения запроса</param>
+    /// <returns>Словарь или лист с результатом</returns>
+    public async Task<(IEnumerable<ResultType>, Dictionary<string, object?>)> ExecuteAsync(string name,
+                                           object? dbParams,
+                                           SqlConnection? connection = null,
+                                           SqlTransaction? transaction = null,
+                                           int timeout = 480
+                                           )
+    {
+
+        IList<ResultType> table;
+        SqlParameter[] parameters;
+
+        // Преобраз. обьекта в массив SQL параметров
+        if (dbParams is not null)
+        {
+            if (dbParams.GetType().IsPrimitive)
+                throw new ArgumentException("Преобразования из примитивного типа в SqlParameter[] не реализовано");
+
+            if (dbParams?.GetType() == typeof(SqlParameter[]))
+            {
+                parameters = dbParams as SqlParameter[];
+            }
+            else
+            {
+                parameters = ObjectConverter.ObjectToArraySQLParameters(dbParams);
+            }
+
+            if (dbParams?.GetType() == typeof(IList))
+            {
+                throw new InvalidOperationException("");
+            }
+        }
+        else
+        {
+            parameters = new SqlParameter[] { };
+        }
+
+        if (connection is null)
+        {
+            using SqlConnection newConnection = new(_connectionString);
+            newConnection.Open();
+            table = await RunExecuterAsync<ResultType>(name, parameters, newConnection, transaction, timeout);
+        }
+        else
+            table = await RunExecuterAsync<ResultType>(name, parameters, connection, transaction, timeout);
+
+
+        Dictionary<string, object?> outputDBParams = GetValueOutputSqlParams(parameters);
+        return (table, outputDBParams);
     }
 
     /// <summary>
@@ -195,13 +255,19 @@ public abstract class AdoExecuter<ResultType>
     }
 
     protected abstract IList<T> RunExecuter<T>(string name,
-                                 SqlParameter[]? paramsProc,
+                                 SqlParameter[]? parameters,
                                  SqlConnection connection,
                                  SqlTransaction? transaction,
                                  int timeout = 480);
 
+    protected abstract Task<IList<T>> RunExecuterAsync<T>(string name,
+                                           SqlParameter[]? paramsProc,
+                                           SqlConnection connection,
+                                           SqlTransaction? transaction,
+                                           int timeout = 480);
+
     protected abstract void RunExecuterWithoutResult(string name,
-                                                     SqlParameter[]? paramsProc,
+                                                     SqlParameter[]? parameters,
                                                      SqlConnection connection,
                                                      SqlTransaction? transaction,
                                                      int timeout);

@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace ado_wrapper_lib.Attributes;
+namespace AdoWrapper.Attributes;
 
 [System.AttributeUsage(System.AttributeTargets.Property | AttributeTargets.Parameter)]
 public class DBColumnAttribute : System.Attribute
@@ -10,5 +10,6 @@ public class DBColumnAttribute : System.Attribute
     public int Lenght { get; set; }
     public bool Mapped { get; set; } = true;
     public bool Output { get; set; } = false;
+    public bool Input { get; set; } = true;
     public DBColumnAttribute() { }
 }
